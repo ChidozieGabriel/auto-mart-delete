@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <title>Auto-Mart</title>
+  </head>
+  <body>
+    <div class="heading-container">
+      <img class="logo" src="images/logo.png" alt="auto mart">
+      <h1>View Car Details</h1>
+    </div>
+    <div class="content">
+      <div class="owner-container">
+        <h2>Owner Info</h2>
+        <div class="row">
+          <span class="th">Name:</span>
+          <span class="td"></span>
+        </div>
+        <div class="row">
+          <span class="th">Email:</span>
+          <span class="td"></span>
+        </div>
+      </div>
+      <div class="car-container">
+        <img src="images/sample_car.png" alt="car image" />
+        <h2>Specifications</h2>
+        <table>
+          <tr>
+            <th>Make</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Model</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Year</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Color</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Body Type</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Mileage</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td></td>
+          </tr>
+        </table>
+        <form class="form-container">
+          <label for="bidprice"><h3>Bid Price</h3></label>
+          <input type="number" name="bidprice" id="bidprice" min="0" required />
+          <button type="submit">Place order</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
