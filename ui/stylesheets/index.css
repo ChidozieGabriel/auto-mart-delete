@@ -1,0 +1,18 @@
+img {
+  height: 180px;
+}
+span {
+  font-size: 0.8em;
+}
+.registration-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.registration-container button {
+  margin: 5px;
+}
+.heading-container {
+  display: flex;
+  flex-direction: column;
+}
