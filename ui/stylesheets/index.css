@@ -1,3 +1,8 @@
+h1,
+h2,
+h3 {
+  text-align: center;
+}
 img {
   height: 180px;
 }
@@ -15,4 +20,46 @@ span {
 .heading-container {
   display: flex;
   flex-direction: column;
+}
+.content-container {
+  display: flex;
+  padding: 10px;
+}
+.summary {
+  font-size: small;
+  padding: 5px;
+  margin-bottom: 0px;
+  padding: 5px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background: white;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 5px;
+}
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.cars {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8em;
+  height: 1.6em;
+  text-align: center;
+}
+.price {
+  text-align: center;
+  font-weight: bold;
+  color: #083814;
+  padding-bottom: 5px;
 }
