@@ -1,0 +1,17 @@
+.content-container {
+  justify-content: center;
+  background: #eee;
+}
+.form-container {
+  margin-top: 10px;
+}
+.submit-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+  align-items: center;
+}
+.submit-container a {
+  margin: 5px;
+  font-size: 1em;
+}
