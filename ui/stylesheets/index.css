@@ -63,3 +63,40 @@ span {
   color: #083814;
   padding-bottom: 5px;
 }
+.report {
+  align-self: center;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+.form-container {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  margin-top: 15px;
+  padding: 5px;
+  align-self: flex-start;
+  border-radius: 5px;
+}
+.price-container {
+  display: flex;
+}
+.price-range {
+  width: 40%;
+  padding-right: 2px;
+}
+.priceline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.radio-container {
+  display: flex;
+  align-items: center;
+}
+.radio-container span {
+  text-align: left;
+}
+.form-container button {
+  margin: 5px;
+}
