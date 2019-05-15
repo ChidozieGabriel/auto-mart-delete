@@ -16,8 +16,12 @@ p {
 }
 h1,
 h2,
-h3 {
+h3,
+label {
   font-weight: bold;
+}
+label {
+  color: #0f942e;
 }
 a {
   color: #0e8b2b;
@@ -38,17 +42,17 @@ button:hover {
   opacity: 0.8;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
-input {
+input,
+textarea {
   margin: 8px 5px;
+  border: 1px solid rgba(50, 50, 50, 0.5);
 }
-input:focus {
+input:focus,
+textarea:focus {
   border: 1px solid rgba(10, 250, 10, 0.8);
 }
 input,
-textarea {
-  border: 1px solid rgba(50, 50, 50, 0.5);
-}
-input,
+textarea,
 button {
   padding: 7px 11px;
   border-radius: 5px;
