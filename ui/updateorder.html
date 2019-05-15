@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <link rel="stylesheet" href="stylesheets/purchaseorder.css">
+    <title>Auto-Mart</title>
+  </head>
+  <body>
+    <div class="heading-container">
+      <img class="logo" src="images/logo.png" alt="auto mart">
+      <h1>Update Your Order</h1>
+    </div>
+    <div class="content">
+      <div class="owner-container">
+        <h2>Owner Info</h2>
+        <table class="row">
+          <th class="th">Name:</span>
+          <td class="td">John Doe</span>
+        </table>
+        <table class="row">
+          <th class="th">Email:</span>
+          <td class="td">john@doe.com</span>
+        </table>
+      </div>
+      <div class="car-container">
+        <img src="images/sample_car.png" alt="car image" />
+        <h2>Specifications</h2>
+        <table>
+          <tr>
+            <th>Make</th>
+            <td>Toyota</td>
+          </tr>
+          <tr>
+            <th>Model</th>
+            <td>Corolla</td>
+          </tr>
+          <tr>
+            <th>Year</th>
+            <td>2010</td>
+          </tr>
+          <tr>
+            <th>Color</th>
+            <td>Red</td>
+          </tr>
+          <tr>
+            <th>Body Type</th>
+            <td>SUV</td>
+          </tr>
+          <tr>
+            <th>Mileage</th>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>-</td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td>₦ 2,500,000.00</td>
+          </tr>
+        </table>
+        <form class="form-container">
+          <label for="bidprice"><h3>Bid Price (₦)</h3></label>
+          <input type="number" name="bidprice" id="bidprice" min="0" value="25000000" required />
+          <button type="submit">Update order</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
