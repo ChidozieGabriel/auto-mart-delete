@@ -63,6 +63,7 @@ input[type='radio'] {
 textarea {
   font-size: small;
   font-family: Arial, Helvetica, sans-serif;
+  padding: 15px;
 }
 .content {
   margin: 5px;

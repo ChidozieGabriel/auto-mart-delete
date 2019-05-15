@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <link rel="stylesheet" href="stylesheets/index.css">
+    <link rel="stylesheet" href="stylesheets/report.css">
+    <title>Auto-Mart</title>
+  </head>
+  <body>
+    <div class="heading-container">
+      <div class="registration-container">
+        <button>Sign in</button>
+        <button>Sign out</button>
+      </div>
+      <img class="logo" src="images/logo.png" alt="auto mart">
+      <h1>Report Car</h1>
+    </div>
+    <div class="content-container">
+      <div class="card" data-car="card">
+        <img src="images/sample_car.png" alt="car photo" />
+        <h3 class="summary">Blue Toyota Corolla 2010</h3>
+        <span class="description">
+          Describing the description of this description of this description
+        </span>
+        <span class="price">₦ 5 000</span>
+      </div>
+      <form class='form-container'>
+        <textarea name="reason" id="reason" cols="30" rows="5" placeholder="...state your reasons here"></textarea>
+        <div class="submit-container">
+          <a href="">
+            <span>Cancel</span>
+          </a>
+          <button type="submit">Report</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
