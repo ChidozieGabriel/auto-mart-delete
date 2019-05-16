@@ -1,0 +1,9 @@
+.delete {
+  align-self: center;
+  font-size: 1em;
+  margin-top: 5px;
+  color: red;
+}
+.delete span {
+  color: red;
+}
