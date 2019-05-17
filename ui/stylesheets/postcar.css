@@ -5,6 +5,11 @@ body {
 label {
   margin-left: 5px;
 }
+input,
+textarea,
+button {
+  max-width: 300px;
+}
 .form-container {
   background: white;
   border-radius: 2px;
@@ -12,7 +17,6 @@ label {
   flex-direction: column;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   justify-content: start;
-  padding: 10px;
 }
 .form-container button {
   margin: 8px 5px;
@@ -22,10 +26,21 @@ label {
 .car-spec {
   display: flex;
   flex-direction: column;
-  max-width: 300px;
 }
 .car-photo {
   height: 480px;
   width: 640px;
   margin: 20px 5px;
+}
+
+@media all and (max-width: 600px) {
+  input,
+  textarea,
+  button {
+    max-width: 100%;
+  }
+  .car-photo {
+    height: 75vw;
+    width: 100%;
+  }
 }

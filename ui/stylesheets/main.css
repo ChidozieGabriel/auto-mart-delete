@@ -73,9 +73,15 @@ textarea {
   flex-direction: column;
   background: #7aaf86;
   align-items: center;
+  padding: 10px;
+}
+.heading-container button {
+  background: transparent;
+  border: 1px solid #0f942e;
 }
 .heading-container .logo {
   height: 180px;
+  width: 100%;
 }
 .error {
   font-size: 0.9em;
