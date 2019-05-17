@@ -3,27 +3,14 @@ h2,
 h3 {
   text-align: center;
 }
-img {
+.card img {
   height: 180px;
 }
 span {
   font-size: 0.8em;
 }
-.registration-container {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-.registration-container button {
-  margin: 5px;
-}
-.heading-container {
-  display: flex;
-  flex-direction: column;
-}
 .content-container {
   display: flex;
-  padding: 10px;
 }
 .summary {
   font-size: small;
@@ -48,6 +35,7 @@ span {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 10px;
 }
 .description {
   overflow: hidden;
@@ -72,11 +60,14 @@ span {
   background: #fff;
   display: flex;
   flex-direction: column;
-  width: 25%;
-  margin-top: 15px;
+  margin-top: 25px;
+  margin-left: 5px;
   padding: 5px;
   align-self: flex-start;
   border-radius: 5px;
+}
+.form-container button {
+  margin: 5px;
 }
 .price-container {
   display: flex;
@@ -97,6 +88,20 @@ span {
 .radio-container span {
   text-align: left;
 }
-.form-container button {
-  margin: 5px;
+
+@media all and (max-width: 600px) {
+  .content-container {
+    flex-direction: column;
+  }
+  .form-container {
+    align-self: center;
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .card {
+    width: 100%;
+  }
+  .card img {
+    height: 75vw;
+  }
 }
