@@ -1,9 +1,10 @@
 .content-container {
   justify-content: center;
   background: #eee;
+  padding: 10px;
 }
 .form-container {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .submit-container {
   display: flex;
@@ -14,4 +15,12 @@
 .submit-container a {
   margin: 5px;
   font-size: 1em;
+}
+@media all and (max-width: 600px) {
+  .form-container {
+    width: 100%;
+  }
+  .card {
+    margin: 0;
+  }
 }

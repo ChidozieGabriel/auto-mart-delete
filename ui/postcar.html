@@ -10,6 +10,10 @@
   </head>
   <body>
     <div class="heading-container">
+      <div class="registration-container">
+        <button>Sign in</button>
+        <button>Sign out</button>
+      </div>
       <img class="logo" src="images/logo.png" alt="Auto-Mart" />
       <h1>POST A CAR</h1>
     </div>
@@ -17,32 +21,23 @@
       <div class="car-spec">
         <h2>Car Specification</h2>
         <label for="make">Make <span class="required">*</span></label>
-        <input type="text" name="make" id="make" placeholder="e.g. Toyota"
-          required />
+        <input type="text" name="make" id="make" placeholder="e.g. Toyota" required />
         <label for="model">Model <span class="required">*</span></label>
-        <input type="text" name="model" id="model" placeholder="e.g. Corolla"
-          required />
+        <input type="text" name="model" id="model" placeholder="e.g. Corolla" required />
         <label for="year">Year <span class="required">*</span></label>
-        <input type="number" name="year" id="year" min="1800" max="2019"
-          placeholder="e.g. 2010" required />
+        <input type="number" name="year" id="year" min="1800" max="2019" placeholder="e.g. 2010" required />
         <label for="color">Color <span class="required">*</span></label>
-        <input type="text" name="color" id="color" placeholder="e.g. Red"
-          required />
+        <input type="text" name="color" id="color" placeholder="e.g. Red" required />
         <label for="bodytype">Body Type</label>
-        <input type="text" name="bodytype" id="bodytype" placeholder="e.g.
-          Sedan" />
+        <input type="text" name="bodytype" id="bodytype" placeholder="e.g. Sedan" />
         <label for="mileage">Mileage (km)</label>
-        <input type="number" name="mileage" id="mileage" placeholder="-- none
-          --" />
+        <input type="number" name="mileage" id="mileage" placeholder="-- none --" />
         <input type="file" name="photo" id="photo" />
-        <img class="car-photo" src="images/sample_car.png"
-          alt="car photo" />
+        <img class="car-photo" src="images/sample_car.png" alt="car photo" />
         <label for="description">Description</label>
-        <textarea class="description" name="description" id="description"
-          cols="30" rows="5" placeholder="...describe your car here"></textarea>
+        <textarea class="description" name="description" id="description" cols="30" rows="5" placeholder="...describe your car here"></textarea>
         <label for="price">Price (₦) <span class="required">*</span></label>
-        <input class="car-price" type="number" name="price" id="price"
-          required />
+        <input class="car-price" type="number" name="price" id="price" required />
         <div class="error"></div>
         <button type="submit">Post Car</button>
       </div>
