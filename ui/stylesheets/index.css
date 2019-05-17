@@ -73,13 +73,12 @@ span {
   display: flex;
 }
 .price-range {
-  width: 40%;
-  padding-right: 2px;
+  max-width: 90px;
 }
 .priceline {
   display: flex;
   align-items: center;
-  justify-content: center;
+  width: auto;
 }
 .radio-container {
   display: flex;
@@ -95,8 +94,8 @@ span {
   }
   .form-container {
     align-self: center;
-    margin-right: 0;
-    margin-left: 0;
+    margin: 0;
+    width: 100%;
   }
   .card {
     width: 100%;

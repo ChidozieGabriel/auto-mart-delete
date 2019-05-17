@@ -82,9 +82,7 @@ tr:nth-child(odd) {
   background-color: rgb(222, 245, 222);
 }
 button {
-  align-self: flex-start;
   padding: 17px 11px;
-  width: 100%;
   margin-left: 0;
   font-size: 1.2em;
 }
