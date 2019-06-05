@@ -5,6 +5,8 @@
   "scripts": {
     "build": "npm run clean && babel src --out-dir dist",
     "clean": "rm -rf dist",
+    "lint-fix": "npx eslint --fix src/**/*.js",
+    "lint-fix-dry": "npx eslint --fix-dry-run src/**/*.js",
     "start": "NODE_ENV=prod DEBUG=http node ./dist",
     "start-dev": "NODE_ENV=dev DEBUG=http babel-watch ./src",
     "test": "NODE_ENV=test nyc mocha --timeout 4000 --recursive --exit --require @babel/register --require @babel/polyfill './src/**/**test.js'",
@@ -34,6 +36,8 @@
     "babel-watch": "^7.0.0",
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1"
   },

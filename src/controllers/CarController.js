@@ -7,16 +7,10 @@ class CarController {
   static create(req, res, next) {
     try {
       const {
-        email,
-        manufacturer,
-        model,
-        price,
-        status = 'available',
-        image_url
+        email, manufacturer, model, price, status = 'available', image_url,
       } = req.body;
 
-      if (!(email && manufacturer && price))
-        throw new ErrorClass('Invalid parameters');
+      if (!(email && manufacturer && price)) throw new ErrorClass('Invalid parameters');
 
       const car = CarStore.create({
         email,
@@ -24,7 +18,7 @@ class CarController {
         model,
         price,
         status,
-        image_url
+        image_url,
       });
 
       const data = { ...car };
@@ -82,15 +76,11 @@ class CarController {
       const { min_price, max_price, ...search } = req.query;
       let data = CarStore.getAll();
 
-      if (min_price && max_price)
-        data = CarStore.filterByPrice(
-          Number(min_price),
-          Number(max_price),
-          data
-        );
+      if (min_price && max_price) {
+        data = CarStore.filterByPrice(Number(min_price), Number(max_price), data);
+      }
 
-      if (search && Object.keys(search).length !== 0)
-        data = CarStore.filter({ ...search }, data);
+      if (search && Object.keys(search).length !== 0) data = CarStore.filter({ ...search }, data);
 
       ResultHandler.success(res, [...data]);
     } catch (err) {

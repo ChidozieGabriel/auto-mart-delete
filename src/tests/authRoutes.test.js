@@ -2,7 +2,7 @@
 import chai, { expect, should } from 'chai';
 import chaiHTTP from 'chai-http';
 import server from '..';
-import { user , unRegisteredUser} from './models/user';
+import { user, unRegisteredUser } from './models/user';
 
 should();
 chai.use(chaiHTTP);
@@ -10,12 +10,12 @@ const route = '/api/v1/auth';
 
 describe('User authentication routes', () => {
   describe('POST /auth/signup', () => {
-    it('should create a new user account', done => {
+    it('should create a new user account', (done) => {
       chai
         .request(server)
         .post(`${route}/signup`)
         .send(user)
-        .then(res => {
+        .then((res) => {
           res.should.have.status(201);
           res.body.should.be.an('object');
 
@@ -36,12 +36,12 @@ describe('User authentication routes', () => {
   });
 
   describe('POST /auth/signin', () => {
-    it('should login a registered user', done => {
+    it('should login a registered user', (done) => {
       chai
         .request(server)
         .post(`${route}/signin`)
         .send(user)
-        .then(res => {
+        .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
 
@@ -54,24 +54,24 @@ describe('User authentication routes', () => {
           expect(email).to.eql(user.email);
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           done(err);
         });
     });
 
-    it('should throw error if no user is found', done => {
+    it('should throw error if no user is found', (done) => {
       chai
         .request(server)
         .post(`${route}/signin`)
         .send(unRegisteredUser)
-        .then(res => {
+        .then((res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
           const { status } = res.body;
           expect(status).to.eql(res.status);
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           done(err);
         });
     });
