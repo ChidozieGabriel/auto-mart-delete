@@ -5,8 +5,8 @@
   "scripts": {
     "build": "npm run clean && babel src --out-dir dist",
     "clean": "rm -rf dist",
-    "lint-fix": "npx eslint --fix src/**/*.js",
-    "lint-fix-dry": "npx eslint --fix-dry-run src/**/*.js",
+    "lint-fix": "./node_modules/.bin/eslint --fix src/**/*.js",
+    "lint-fix-dry": "./node_modules/.bin/eslint --fix-dry-run src/**/*.js",
     "start": "NODE_ENV=prod DEBUG=http node ./dist",
     "start-dev": "NODE_ENV=dev DEBUG=http babel-watch ./src",
     "test": "NODE_ENV=test nyc mocha --timeout 4000 --recursive --exit --require @babel/register --require @babel/polyfill './src/**/**test.js'",
