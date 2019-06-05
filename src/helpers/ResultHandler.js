@@ -8,7 +8,12 @@ class ResultHandler {
   }
 
   static error(err, req, res, next) {
-    const { status, message: error } = err;
+    const { status = 500, message } = err;
+    const error = status === 500 ? 'Server error' : message;
+
+    if (status === 500) {
+      console.log(err);
+    }
 
     res.status(status).json({
       success: false,
