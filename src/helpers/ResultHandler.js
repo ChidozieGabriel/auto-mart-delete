@@ -1,5 +1,5 @@
 class ResultHandler {
-  static success(res, data, status) {
+  static success(res, data, status = 200) {
     res.status(status).json({
       success: true,
       status,
