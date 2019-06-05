@@ -27,12 +27,12 @@ const postCars = function postCars(callback, eachCar) {
 };
 
 describe('Car routes "/car"', () => {
-  before(done => {
+  before((done) => {
     chai
       .request(server)
       .post(`${apiV1}/auth/signup`)
       .send(user)
-      .then(res => {
+      .then((res) => {
         const { token: t } = res.body.data;
         token = t;
         // done();
@@ -41,29 +41,29 @@ describe('Car routes "/car"', () => {
 
     let count = 0;
     async.whilst(
-      cb => {
+      (cb) => {
         cb(null, count < manyCars.length);
       },
-      callback => {
+      (callback) => {
         const eachCar = manyCars[count];
         count += 1;
         postCars(callback, eachCar);
       },
-      err => {
+      (err) => {
         if (err) done(err);
         else done();
-      }
+      },
     );
   });
 
   describe('POST /car', () => {
-    it('should post a car', done => {
+    it('should post a car', (done) => {
       chai
         .request(server)
         .post(`${apiV1}/car`)
         .set({ Authorization: `Bearer ${token}` })
         .send(car)
-        .then(res => {
+        .then((res) => {
           res.should.have.status(201);
           res.body.should.be.an('object');
           const { status, data } = res.body;
@@ -75,6 +75,31 @@ describe('Car routes "/car"', () => {
             .and.to.be.a('number');
 
           postedCar = { ...data };
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  describe('PATCH /car/<:car-id>/status', () => {
+    it('should mark a posted car Ad as sold', (done) => {
+      chai
+        .request(server)
+        .patch(`${apiV1}/car/${postedCar.id}/status`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send({ status: 'sold' })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          expect(data).to.be.an('object');
+
+          const { id, status: carStatus } = data;
+          expect(id).to.eql(postedCar.id);
+          expect(carStatus).to.eql('sold');
+
           done();
         })
         .catch(err => done(err));
