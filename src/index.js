@@ -1,7 +1,7 @@
 import express, { json, urlencoded } from 'express';
 import logger from 'morgan';
 import routesV1 from './routes/v1';
-import errorHandler from './helpers/errorHandler';
+import ResultHandler from './helpers/ResultHandler'
 import config from './config';
 
 const app = express();
@@ -18,7 +18,7 @@ app.use('*', (req, res, next) => {
   next(error);
 });
 
-app.use(errorHandler);
+app.use((ResultHandler.error));
 
 app.set('port', config.PORT);
 
