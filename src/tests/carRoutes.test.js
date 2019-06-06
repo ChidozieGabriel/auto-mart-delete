@@ -130,4 +130,26 @@ describe('Car routes "/car"', () => {
         .catch(err => done(err));
     });
   });
+
+  describe('GET /car/<:car-id>/', () => {
+    it('should get a specific car', (done) => {
+      chai
+        .request(server)
+        .get(`${apiV1}/car/${postedCar.id}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(200);
+          expect(data).to.be.an('object');
+
+          const { id } = data;
+          expect(id).to.eql(id);
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
 });
