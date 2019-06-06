@@ -173,4 +173,82 @@ describe('Car routes "/car"', () => {
         .catch(err => done(err));
     });
   });
+
+  describe('GET /car?status=available&min_price=​XXXValue​&max_price=XXXValue', () => {
+    it('should get all unsold cars within a price range', (done) => {
+      const minPrice = 100;
+      const maxPrice = 100000;
+      chai
+        .request(server)
+        .get(`${apiV1}/car?status=available&min_price=${minPrice}&max_price=${maxPrice}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          expect(data).to.be.an('array');
+          expect(data).to.satisfy(cars => cars.every(
+            eachCar => eachCar.status === 'available'
+                && eachCar.price >= minPrice
+                && eachCar.price <= maxPrice,
+          ));
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  describe('DELETE /car/<:car_id>/', () => {
+    it('should delete a specific car Ad', (done) => {
+      chai
+        .request(server)
+        .delete(`${apiV1}/car/${postedCar.id}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          expect(data).to.be.a('string');
+          expect(data).to.include('Car Ad successfully deleted');
+
+          chai
+            .request(server)
+            .get(`${apiV1}/car`)
+            .set({ Authorization: `Bearer ${token}` })
+            .then((res1) => {
+              expect(res1.body.data).to.satisfy(cars => cars.some(c => c.id !== postedCar.id));
+              done();
+            })
+            .catch(err => done(err));
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  describe('GET /car/', () => {
+    it('should view all posted ads whether sold or available', (done) => {
+      chai
+        .request(server)
+        .get(`${apiV1}/car`)
+        .set({ Authorization: `Bearer ${token}` })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          // eslint-disable-next-line no-unused-expressions
+          expect(data).to.be.an('array').and.not.empty;
+          expect(data).to.satisfy(cars => cars.every(eachCar => eachCar.status === 'sold' || eachCar.status === 'available'));
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
 });
