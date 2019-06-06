@@ -105,4 +105,29 @@ describe('Car routes "/car"', () => {
         .catch(err => done(err));
     });
   });
+
+  describe('PATCH /car/<:car-id>/price', () => {
+    it('should update the price of a car', (done) => {
+      const newPrice = 100.0;
+      chai
+        .request(server)
+        .patch(`${apiV1}/car/${postedCar.id}/price`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send({ price: newPrice })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          expect(data).to.be.an('object');
+
+          const { price } = data;
+          expect(price).to.eql(newPrice);
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
 });
