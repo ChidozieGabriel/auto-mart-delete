@@ -10,7 +10,9 @@ class CarController {
         email, manufacturer, model, price, status = 'available', image_url,
       } = req.body;
 
-      if (!(email && manufacturer && price)) throw new ErrorClass('Invalid parameters');
+      if (!(email && manufacturer && price)) {
+        throw new ErrorClass('Invalid parameters: \nInclude email, manufacturer and price');
+      }
 
       const car = CarStore.create({
         email,

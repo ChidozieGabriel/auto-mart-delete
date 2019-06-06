@@ -3,7 +3,7 @@ class ResultHandler {
     res.status(status).json({
       success: true,
       status,
-      data
+      data,
     });
   }
 
@@ -18,7 +18,7 @@ class ResultHandler {
     res.status(status).json({
       success: false,
       status,
-      error
+      error,
     });
   }
 }
