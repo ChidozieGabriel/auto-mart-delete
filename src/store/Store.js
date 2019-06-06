@@ -15,7 +15,8 @@ class Store {
   }
 
   get(id) {
-    return this.data.find(user => user.id === id);
+    const car = this.data.find(user => user.id === id);
+    return car || {};
   }
 
   getAll() {
@@ -24,7 +25,7 @@ class Store {
 
   update(id, update) {
     let datum = null;
-    this.data = this.data.map(value => {
+    this.data = this.data.map((value) => {
       if (value.id === id) {
         datum = { ...value, ...update };
         return datum;
@@ -38,7 +39,7 @@ class Store {
 
   remove(id) {
     let datum = null;
-    this.data = this.data.filter(value => {
+    this.data = this.data.filter((value) => {
       datum = value;
       return value.id !== id;
     });
@@ -55,9 +56,7 @@ class Store {
     Object.entries(search).forEach(([key, value]) => {
       if (!value) return;
 
-      const filter = data.filter(e => {
-        return e[key] === value;
-      });
+      const filter = data.filter(e => e[key] === value);
 
       allFiltered = [...allFiltered, ...filter];
     });
