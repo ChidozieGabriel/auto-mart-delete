@@ -152,4 +152,25 @@ describe('Car routes "/car"', () => {
         .catch(err => done(err));
     });
   });
+
+  describe('GET /car?status=available', () => {
+    it('should get all unsold cars', (done) => {
+      chai
+        .request(server)
+        .get(`${apiV1}/car?status=available`)
+        .set({ Authorization: `Bearer ${token}` })
+        .then((res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          // eslint-disable-next-line no-unused-expressions
+          expect(data).to.be.an('array').and.not.empty;
+          expect(data).to.satisfy(cars => cars.every(eachCar => eachCar.status === 'available'));
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
 });
