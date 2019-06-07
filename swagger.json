@@ -1,0 +1,779 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Auto-Mart API Server",
+    "contact": {
+      "name": "Chidozie",
+      "email": "nnabugwuchidozie@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "description": "This is an Auto-Mart server to buy and sell cars. Find out more at the [repository](https://github.com/ChidozieGabriel/auto-mart)"
+  },
+  "security": [],
+  "servers": [
+    {
+      "url": "https://automart-site.herokuapp.com/api/v1",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "create user and add to the store",
+        "description": "",
+        "parameters": [],
+        "operationId": "signupUser",
+        "responses": {
+          "allOf": [
+            {
+              "201": {
+                "description": "User created successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/UserResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            }
+          ]
+        },
+        "tags": ["user"],
+        "security": [],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UserRequest"
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "summary": "sign in user from store",
+        "description": "",
+        "parameters": [],
+        "operationId": "signinUser",
+        "responses": {
+          "allOf": [
+            {
+              "200": {
+                "description": "User signed in successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/UserResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            }
+          ]
+        },
+        "tags": ["user"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UserSigninRequest"
+        },
+        "security": []
+      }
+    },
+    "/car": {
+      "post": {
+        "summary": "create car and add to store",
+        "description": "",
+        "parameters": [],
+        "operationId": "postCar",
+        "responses": {
+          "allOf": [
+            {
+              "201": {
+                "description": "Car created successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/CarResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            }
+          ]
+        },
+        "tags": ["car"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CarRequest"
+        }
+      },
+      "get": {
+        "tags": ["car"],
+        "summary": "",
+        "description": "",
+        "parameters": [],
+        "operationId": "",
+        "responses": {
+          "allOf": [
+            {
+              "201": {
+                "description": "User created successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/UserResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/403Response"
+            }
+          ]
+        }
+      }
+    },
+    "/car/{carId}": {
+      "get": {
+        "summary": "get car with id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getCar",
+        "responses": {
+          "allOf": [
+            {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/CarResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/403Response"
+            }
+          ]
+        },
+        "tags": ["car"]
+      },
+      "delete": {
+        "summary": "delete car from store",
+        "description": "",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "deleteCar",
+        "responses": {
+          "allOf": [
+            {
+              "204": {
+                "description": "Deleted Successfully"
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/403Response"
+            }
+          ]
+        },
+        "tags": ["car"]
+      }
+    },
+    "/car/{carId}/status": {
+      "patch": {
+        "summary": "mark car as sold or available",
+        "description": "",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "markCar",
+        "responses": {
+          "allOf": [
+            {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/CarResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            }
+          ]
+        },
+        "tags": ["car"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CarStatusRequest"
+        }
+      }
+    },
+    "/car/{carId}/price": {
+      "patch": {
+        "summary": "update the price of a posted car",
+        "description": "",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "updateCarPrice",
+        "responses": {
+          "allOf": [
+            {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/CarResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            }
+          ]
+        },
+        "tags": ["car"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CarPriceRequest"
+        }
+      }
+    },
+    "/order": {
+      "post": {
+        "summary": "create order and add to the store",
+        "description": "",
+        "parameters": [],
+        "operationId": "postOrder",
+        "responses": {
+          "allOf": [
+            {
+              "201": {
+                "description": "Order created successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/OrderResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            }
+          ]
+        },
+        "tags": ["order"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/OrderRequest"
+        }
+      }
+    },
+    "/order/{orderId}/price": {
+      "patch": {
+        "summary": "update the price of a placed order",
+        "description": "",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": false
+          }
+        ],
+        "operationId": "updatePrice",
+        "responses": {
+          "allOf": [
+            {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/responseBodies/OrderResponse"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "$ref": "#/components/responseBodies/400Response"
+            },
+            {
+              "$ref": "#/components/responseBodies/401Response"
+            }
+          ]
+        },
+        "tags": ["order"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/OrderRequest"
+        }
+      }
+    }
+  },
+  "components": {
+    "links": {},
+    "callbacks": {},
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "Car": {
+        "type": "object",
+        "required": ["price", "manufacturer"],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["new", "used"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["available", "sold"],
+            "default": "available"
+          },
+          "price": {
+            "type": "number"
+          },
+          "manufacturer": {
+            "type": "string",
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "example": "Corolla"
+          },
+          "body_type": {
+            "type": "string",
+            "example": "van"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": ["price_offered"],
+        "properties": {
+          "price_offered": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "UserSignin": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "UserSigninRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/requestBodies/UserSignin"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UserSignin"
+            }
+          }
+        }
+      },
+      "User": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/User"
+          },
+          {
+            "properties": {
+              "password": {
+                "type": "string",
+                "format": "password"
+              }
+            }
+          }
+        ]
+      },
+      "UserRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/requestBodies/User"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "Car": {
+        "$ref": "#/components/schemas/Car"
+      },
+      "CarRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/requestBodies/Car"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Car"
+            }
+          }
+        }
+      },
+      "CarPrice": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number"
+          }
+        }
+      },
+      "CarPriceRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/requestBodies/CarPrice"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/requestBodies/CarPrice"
+            }
+          }
+        }
+      },
+      "CarStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["available", "sold"],
+            "default": "sold"
+          }
+        }
+      },
+      "CarStatusRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/requestBodies/CarStatus"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/requestBodies/CarStatus"
+            }
+          }
+        }
+      },
+      "Order": {
+        "$ref": "#/components/schemas/Order"
+      },
+      "OrderRequest": {
+        "content": {
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/requestBodies/Order"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Order"
+            }
+          }
+        }
+      }
+    },
+    "responseBodies": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": false
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "400Response": {
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/responseBodies/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "401Response": {
+        "401": {
+          "description": "Unauthorized access",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/responseBodies/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "403Response": {
+        "403": {
+          "description": "Forbidden access",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/responseBodies/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "created_on": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/responseBodies/ApiResponse"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          {
+            "properties": {
+              "data": {
+                "token": {
+                  "type": "string"
+                },
+                "is_admin": {
+                  "type": "boolean",
+                  "default": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "CarResponse": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/responseBodies/ApiResponse"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Car"
+              }
+            }
+          },
+          {
+            "properties": {
+              "data": {
+                "owner_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "OrderResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/responseBodies/ApiResponse"
+          },
+          {
+            "properties": {
+              "data": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          },
+          {
+            "properties": {
+              "data": {
+                "status": {
+                  "type": "string",
+                  "enum": ["pending", "accepted", "rejected"]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "user_auth": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "header"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "user"
+    },
+    {
+      "name": "car"
+    },
+    {
+      "name": "order"
+    }
+  ]
+}
