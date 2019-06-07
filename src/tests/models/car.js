@@ -4,10 +4,10 @@ const car = {
   model: 'Corolla',
   price: 100500,
   state: 'used',
-  status: 'available'
+  status: 'available',
 };
 
-const randomCars = function createCars(numOfCars = 50) {
+const randomCars = function createCars(numOfCars = 25) {
   const cars = [];
   for (let i = 0; i < numOfCars; i += 1) {
     const aCar = { ...car };

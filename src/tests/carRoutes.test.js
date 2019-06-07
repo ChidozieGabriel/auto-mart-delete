@@ -10,7 +10,7 @@ should();
 chai.use(chaiHTTP);
 
 const apiV1 = '/api/v1';
-const manyCars = randomCars(5);
+const manyCars = randomCars();
 let postedCar = {};
 let token = '';
 
