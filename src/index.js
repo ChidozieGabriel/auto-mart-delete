@@ -15,6 +15,14 @@ app.use(urlencoded({ extended: false }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/api/v1', routesV1);
 
+app.get('/', (req, res) => res.json({
+  message: "Welcome to Auto-Mart. Access API docs through '/api-docs'",
+}));
+
+app.get('/api', (req, res) => res.json({
+  message: "Welcome to Auto-Mart API. Access API docs through '/api-docs'",
+}));
+
 app.use('*', (req, res, next) => {
   const error = Error('Not Found');
   error.status = 404;
