@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="stylesheets/main.css">
-    <link rel="stylesheet" href="stylesheets/postcar.css">
+    <link rel="stylesheet" href="stylesheets/main.css" />
+    <link rel="stylesheet" href="stylesheets/postcar.css" />
     <title>Auto-Mart</title>
   </head>
   <body>
     <div class="heading-container">
+      <div class="registration-container">
+        <a href="./signin.html">Sign in</a>
+        <a href="./signup.html">Sign Up</a>
+      </div>
       <img class="logo" src="images/logo.png" alt="Auto-Mart" />
       <h1>UPDATE CAR</h1>
     </div>
@@ -17,23 +21,77 @@
       <div class="car-spec">
         <h2>Car Specification</h2>
         <label for="make">Make <span class="required">*</span></label>
-        <input type="text" name="make" id="make" placeholder="Toyota" required disabled/>
+        <input
+          type="text"
+          name="make"
+          id="make"
+          placeholder="Toyota"
+          required
+          disabled
+        />
         <label for="model">Model <span class="required">*</span></label>
-        <input type="text" name="model" id="model" placeholder="Corolla" required disabled />
+        <input
+          type="text"
+          name="model"
+          id="model"
+          placeholder="Corolla"
+          required
+          disabled
+        />
         <label for="year">Year <span class="required">*</span></label>
-        <input type="number" name="year" id="year" min="1800" max="2019" placeholder="2010" required disabled />
+        <input
+          type="number"
+          name="year"
+          id="year"
+          min="1800"
+          max="2019"
+          placeholder="2010"
+          required
+          disabled
+        />
         <label for="color">Color <span class="required">*</span></label>
-        <input type="text" name="color" id="color" placeholder="Red" required disabled />
+        <input
+          type="text"
+          name="color"
+          id="color"
+          placeholder="Red"
+          required
+          disabled
+        />
         <label for="bodytype">Body Type</label>
-        <input type="text" name="bodytype" id="bodytype" placeholder="e.g. Sedan" disabled/>
+        <input
+          type="text"
+          name="bodytype"
+          id="bodytype"
+          placeholder="e.g. Sedan"
+          disabled
+        />
         <label for="mileage">Mileage (km)</label>
-        <input type="number" name="mileage" id="mileage" placeholder="-- none --" />
+        <input
+          type="number"
+          name="mileage"
+          id="mileage"
+          placeholder="-- none --"
+        />
         <input type="file" name="photo" id="photo" />
         <img class="car-photo" src="images/sample_car.png" alt="car photo" />
         <label for="description">Description</label>
-        <textarea class="description" name="description" id="description" cols="30" rows="5" placeholder="...describe your car here"></textarea>
+        <textarea
+          class="description"
+          name="description"
+          id="description"
+          cols="30"
+          rows="5"
+          placeholder="...describe your car here"
+        ></textarea>
         <label for="price">Price (₦) <span class="required">*</span></label>
-        <input class="car-price" type="number" name="price" id="price" required />
+        <input
+          class="car-price"
+          type="number"
+          name="price"
+          id="price"
+          required
+        />
         <div class="error"></div>
         <button type="submit">Update Car</button>
       </div>
