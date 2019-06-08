@@ -31,6 +31,7 @@ a {
   outline: none;
   text-decoration: none;
   font-size: 0.9em;
+  cursor: default;
 }
 a:hover {
   text-decoration: underline;
@@ -78,9 +79,10 @@ textarea {
   align-items: center;
   padding: 10px;
 }
-.heading-container button {
-  background: transparent;
-  border: 1px solid #0f942e;
+.heading-container a {
+  padding: 5px;
+  color: #fafcfb;
+  text-transform: capitalize;
 }
 .heading-container .logo {
   height: 180px;
