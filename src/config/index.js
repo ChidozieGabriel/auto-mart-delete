@@ -14,12 +14,15 @@ switch (process.env.NODE_ENV) {
 
   case 'prod':
     config.PORT = process.env.PROD_PORT;
-    console.log('PRODUCTION PORT', process.env.PORT);
     break;
 
   default:
     config.PORT = process.env.PORT || 3000;
     break;
+}
+
+if (!config.PORT) {
+  config.PORT = 3000;
 }
 
 config.PRIVATE_KEY = fs.readFileSync('./private.pub', 'utf8');

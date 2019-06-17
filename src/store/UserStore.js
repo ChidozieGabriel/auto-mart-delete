@@ -21,8 +21,6 @@ class UserStore extends Store {
     const hashedPassword = await bcrypt.hash(password, 10);
     const params = [id, created_on, email, firstname, lastname, address, hashedPassword];
 
-    console.log('hashedP: ', hashedPassword);
-
     const res = await DB.query(query, params);
 
     return UserStore.extract(res);
