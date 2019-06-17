@@ -4,9 +4,9 @@ import ResultHandler from '../helpers/ResultHandler';
 import ErrorClass from '../helpers/ErrorClass';
 
 class UserController {
-  static signUp(req, res, next) {
+  static async signUp(req, res, next) {
     try {
-      const user = UserStore.create(req.body);
+      const user = await UserStore.create(req.body);
       const token = JwtHandler.getToken({ id: user.id });
       const data = { token, ...user };
       ResultHandler.success(res, data, 201);

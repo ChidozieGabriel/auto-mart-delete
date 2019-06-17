@@ -142,7 +142,7 @@
                 "content": {
                   "application/json": {
                     "schema": {
-                      "$ref": "#/components/responseBodies/UserResponse"
+                      "$ref": "#/components/responseBodies/CarResponse"
                     }
                   }
                 }
@@ -675,6 +675,9 @@
               "created_on": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "token": {
+                "type": "string"
               }
             }
           }
@@ -696,12 +699,12 @@
           {
             "properties": {
               "data": {
-                "token": {
-                  "type": "string"
-                },
-                "is_admin": {
-                  "type": "boolean",
-                  "default": false
+                "type": "object",
+                "properties": {
+                  "is_admin": {
+                    "type": "boolean",
+                    "default": false
+                  }
                 }
               }
             }

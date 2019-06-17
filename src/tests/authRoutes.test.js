@@ -2,7 +2,7 @@
 import chai, { expect, should } from 'chai';
 import chaiHTTP from 'chai-http';
 import server from '..';
-import { user, unRegisteredUser } from './models/user';
+import { user, unRegisteredUser } from './mock/user';
 
 should();
 chai.use(chaiHTTP);
@@ -26,7 +26,9 @@ describe('User authentication routes', () => {
           const { email } = data;
           data.should.have.property('token');
           data.should.have.property('id');
+          data.should.have.property('created_on');
           data.should.not.have.property('password');
+          data.should.have.property('is_admin');
           expect(email).to.eql(user.email);
 
           done();
@@ -35,7 +37,7 @@ describe('User authentication routes', () => {
     });
   });
 
-  describe('POST /auth/signin', () => {
+  xdescribe('POST /auth/signin', () => {
     it('should login a registered user', (done) => {
       chai
         .request(server)
