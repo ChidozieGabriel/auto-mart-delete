@@ -2,11 +2,11 @@ language: node_js
 node_js:
   - 'node'
 cache: npm
+services:
+  - postgresql
 before_script:
   - psql -c 'CREATE DATABASE travis_ci_test;' -U postgres
 script:
   - 'npm run test-coverage'
-services:
-  - postgresql
 notifications:
   email: false
