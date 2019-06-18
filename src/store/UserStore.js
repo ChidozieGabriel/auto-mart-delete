@@ -1,19 +1,29 @@
+/* eslint-disable camelcase */
+import uuid from 'uuid/v4';
+import bcrypt from 'bcrypt';
 import Store from './Store';
+import ErrorClass from '../helpers/ErrorClass';
+import DB from '../DB';
 
 class UserStore extends Store {
-  constructor() {
-    super();
-    if (!UserStore.instance) {
-      this.data = [];
-      UserStore.instance = this;
+  static async create(user) {
+    const {
+      email, firstname, lastname, address, password,
+    } = user;
+
+    if (!(email && password)) {
+      throw new ErrorClass('Enter email and password');
     }
 
-    return UserStore.instance;
-  }
+    const id = uuid();
+    const created_on = new Date();
+    const query = 'INSERT INTO users(id, created_on, email, firstname, lastname, address, password) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const params = [id, created_on, email, firstname, lastname, address, hashedPassword];
 
-  create(user) {
-    const u = super.create(user);
-    return UserStore.extract(u);
+    const res = await DB.query(query, params);
+
+    return UserStore.extract(res);
   }
 
   get(id) {
@@ -39,6 +49,4 @@ class UserStore extends Store {
   }
 }
 
-const instance = new UserStore();
-
-export default instance;
+export default UserStore;

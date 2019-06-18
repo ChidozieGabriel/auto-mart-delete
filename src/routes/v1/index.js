@@ -12,8 +12,8 @@ router.get('/', (req, res) => res.json({
 
 router.use('/auth', authRoutes);
 
-router.use('/car', JwtHandler.authorize, carRoutes);
+// router.use('/car', JwtHandler.authorize, carRoutes);
 
-router.use('/order', JwtHandler.authorize, orderRoutes);
+// router.use('/order', JwtHandler.authorize, orderRoutes);
 
 export default router;

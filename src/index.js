@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import express, { json, urlencoded } from 'express';
 import logger from 'morgan';
 import swaggerUi from 'swagger-ui-express';
