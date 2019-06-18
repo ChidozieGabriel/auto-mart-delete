@@ -15,16 +15,11 @@ class UserController {
     }
   }
 
-  static signIn(req, res, next) {
+  static async signIn(req, res, next) {
     try {
-      const user = UserStore.getByEmail(req.body);
-      if (!user) {
-        throw new ErrorClass('Incorrect email or password');
-      }
-
+      const user = await UserStore.getByEmail(req.body);
       const token = JwtHandler.getToken({ id: user.id });
       const data = { token, ...user };
-
       ResultHandler.success(res, data);
     } catch (error) {
       next(error);
