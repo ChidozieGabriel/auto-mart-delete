@@ -20,7 +20,6 @@ class UserStore extends Store {
     const query = 'INSERT INTO users(id, created_on, email, firstname, lastname, address, password) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';
     const hashedPassword = await bcrypt.hash(password, 10);
     const params = [id, created_on, email, firstname, lastname, address, hashedPassword];
-
     const res = await DB.query(query, params);
 
     return UserStore.extract(res);
@@ -31,9 +30,28 @@ class UserStore extends Store {
     return user ? UserStore.extract(user) : null;
   }
 
-  getByEmail({ email, password }) {
-    const aUser = this.data.find(user => user.email === email && user.password === password);
-    return aUser ? UserStore.extract(aUser) : null;
+  static async getByEmail({ email, password }) {
+    if (!(email && password)) {
+      throw new ErrorClass('Enter email and password');
+    }
+
+    const query = `
+      SELECT * FROM users 
+      WHERE 
+        email = $1
+    `;
+    const params = [email];
+    const res = await DB.query(query, params);
+    if (!res) {
+      throw new ErrorClass('User is not registered!');
+    }
+
+    const isPassword = await bcrypt.compare(password, res.password);
+    if (!isPassword) {
+      throw new ErrorClass('Incorrect password');
+    }
+
+    return UserStore.extract(res);
   }
 
   getAll() {

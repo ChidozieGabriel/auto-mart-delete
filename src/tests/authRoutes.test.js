@@ -37,7 +37,7 @@ describe('User authentication routes', () => {
     });
   });
 
-  xdescribe('POST /auth/signin', () => {
+  describe('POST /auth/signin', () => {
     it('should login a registered user', (done) => {
       chai
         .request(server)
