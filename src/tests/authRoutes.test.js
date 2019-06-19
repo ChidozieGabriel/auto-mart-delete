@@ -2,10 +2,12 @@
 import chai, { expect, should } from 'chai';
 import chaiHTTP from 'chai-http';
 import server from '..';
-import { user, unRegisteredUser } from './mock/user';
+import User from './mock/User';
 
 should();
 chai.use(chaiHTTP);
+
+const { user, unRegisteredUser } = new User();
 const route = '/api/v1/auth';
 
 describe('User authentication routes', () => {

@@ -3,14 +3,16 @@ import chai, { should, expect } from 'chai';
 import chaiHTTP from 'chai-http';
 import server from '..';
 import async from 'async';
-import { car, randomCars } from './mock/car';
-import user from './mock/user';
+import fs from 'fs';
+import Car from './mock/Car';
+import User from './mock/User';
 
 should();
 chai.use(chaiHTTP);
 
+const { user } = new User();
+const { car, carWithImage, randomCars } = new Car();
 const apiV1 = '/api/v1';
-const manyCars = randomCars();
 let postedCar = {};
 let token = '';
 
@@ -26,7 +28,7 @@ const postCars = function postCars(callback, eachCar) {
     .catch(err => callback(err, null));
 };
 
-xdescribe('Car routes "/car"', () => {
+describe('Car routes "/car"', () => {
   before((done) => {
     chai
       .request(server)
@@ -42,10 +44,10 @@ xdescribe('Car routes "/car"', () => {
     let count = 0;
     async.whilst(
       (cb) => {
-        cb(null, count < manyCars.length);
+        cb(null, count < randomCars.length);
       },
       (callback) => {
-        const eachCar = manyCars[count];
+        const eachCar = randomCars[count];
         count += 1;
         postCars(callback, eachCar);
       },
@@ -70,18 +72,40 @@ xdescribe('Car routes "/car"', () => {
           expect(status).to.eql(res.status);
           expect(data).to.be.an('object');
           expect(data).to.have.property('id');
-          expect(data)
-            .to.have.property('price')
-            .and.to.be.a('number');
+          expect(data).to.have.property('price');
+          expect(data).to.have.property('manufacturer');
 
           postedCar = { ...data };
           done();
         })
         .catch(err => done(err));
     });
+
+    it('should upload car image', (done) => {
+      chai
+        .request(server)
+        .post(`${apiV1}/car`)
+        .set({ Authorization: `Bearer ${token}` })
+        .field('manufacturer', car.manufacturer)
+        .field('price', car.price)
+        .attach('image', fs.readFileSync(carWithImage.imagePath))
+        .then((res) => {
+          res.should.have.status(201);
+          res.body.should.be.an('object');
+          const { status, data } = res.body;
+          expect(status).to.eql(res.status);
+          expect(data).to.be.an('object');
+          expect(data).to.have.property('image_url');
+
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+    });
   });
 
-  describe('PATCH /car/<:car-id>/status', () => {
+  xdescribe('PATCH /car/<:car-id>/status', () => {
     it('should mark a posted car Ad as sold', (done) => {
       chai
         .request(server)
@@ -106,7 +130,7 @@ xdescribe('Car routes "/car"', () => {
     });
   });
 
-  describe('PATCH /car/<:car-id>/price', () => {
+  xdescribe('PATCH /car/<:car-id>/price', () => {
     it('should update the price of a car', (done) => {
       const newPrice = 100.0;
       chai
@@ -131,7 +155,7 @@ xdescribe('Car routes "/car"', () => {
     });
   });
 
-  describe('GET /car/<:car-id>/', () => {
+  xdescribe('GET /car/<:car-id>/', () => {
     it('should get a specific car', (done) => {
       chai
         .request(server)
@@ -153,7 +177,7 @@ xdescribe('Car routes "/car"', () => {
     });
   });
 
-  describe('GET /car?status=available', () => {
+  xdescribe('GET /car?status=available', () => {
     it('should get all unsold cars', (done) => {
       chai
         .request(server)
@@ -174,7 +198,7 @@ xdescribe('Car routes "/car"', () => {
     });
   });
 
-  describe('GET /car?status=available&min_price=​XXXValue​&max_price=XXXValue', () => {
+  xdescribe('GET /car?status=available&min_price=​XXXValue​&max_price=XXXValue', () => {
     it('should get all unsold cars within a price range', (done) => {
       const minPrice = 100;
       const maxPrice = 100000;
@@ -201,7 +225,7 @@ xdescribe('Car routes "/car"', () => {
     });
   });
 
-  describe('DELETE /car/<:car_id>/', () => {
+  xdescribe('DELETE /car/<:car_id>/', () => {
     it('should delete a specific car Ad', (done) => {
       chai
         .request(server)
@@ -230,7 +254,7 @@ xdescribe('Car routes "/car"', () => {
     });
   });
 
-  describe('GET /car/', () => {
+  xdescribe('GET /car/', () => {
     it('should view all posted ads whether sold or available', (done) => {
       chai
         .request(server)

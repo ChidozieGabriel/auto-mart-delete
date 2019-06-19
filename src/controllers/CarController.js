@@ -4,27 +4,10 @@ import ErrorClass from '../helpers/ErrorClass';
 import ResultHandler from '../helpers/ResultHandler';
 
 class CarController {
-  static create(req, res, next) {
+  static async create(req, res, next) {
     try {
-      const {
-        email, manufacturer, model, price, status = 'available', image_url,
-      } = req.body;
-
-      if (!(email && manufacturer && price)) {
-        throw new ErrorClass('Invalid parameters: \nInclude email, manufacturer and price');
-      }
-
-      const car = CarStore.create({
-        email,
-        manufacturer,
-        model,
-        price,
-        status,
-        image_url,
-      });
-
+      const car = await CarStore.create(req.user.id, req.body);
       const data = { ...car };
-
       ResultHandler.success(res, data, 201);
     } catch (err) {
       next(err);

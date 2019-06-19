@@ -35,13 +35,8 @@ class JwtHandler {
       }
 
       JwtHandler.verifyToken(token, (err, payload) => {
-        if (!token) {
-          throw new ErrorClass('No token provided', 401);
-        }
-
         if (err) {
-          next(new ErrorClass(err.message, 401));
-          return;
+          throw new ErrorClass(err.message, 401);
         }
 
         req.user = payload;

@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import config from '../config';
-import Utils from '../Utils';
+import Utils from '../helpers/Utils';
 
 console.log('DB: ', config.DB);
 
