@@ -10,8 +10,8 @@ import User from './mock/User';
 should();
 chai.use(chaiHTTP);
 
-const { user } = new User();
-const { car, carWithImage, randomCars } = new Car();
+const { user, anotherUser } = new User();
+const { car, carWithImage, randomCars } = new Car(3);
 const apiV1 = '/api/v1';
 let postedCar = {};
 let token = '';
@@ -27,18 +27,20 @@ const postCars = function postCars(callback, eachCar) {
     })
     .catch(err => callback(err, null));
 };
+const postUser = async function postUser(aUser) {
+  const res = await chai
+    .request(server)
+    .post(`${apiV1}/auth/signup`)
+    .send(aUser);
+  const { token: t } = res.body.data;
+  return t;
+};
 
 describe('Car routes "/car"', () => {
   before((done) => {
-    chai
-      .request(server)
-      .post(`${apiV1}/auth/signup`)
-      .send(user)
-      .then((res) => {
-        const { token: t } = res.body.data;
-        token = t;
-
-        // done();
+    postUser(user)
+      .then((aToken) => {
+        token = aToken;
         let count = 0;
         async.whilst(
           (cb) => {
@@ -130,9 +132,9 @@ describe('Car routes "/car"', () => {
     });
   });
 
-  xdescribe('PATCH /car/<:car-id>/price', () => {
+  describe('PATCH /car/<:car-id>/price', () => {
     it('should update the price of a car', (done) => {
-      const newPrice = 100.0;
+      const newPrice = Number(postedCar.price) * 1.2;
       chai
         .request(server)
         .patch(`${apiV1}/car/${postedCar.id}/price`)
@@ -147,9 +149,53 @@ describe('Car routes "/car"', () => {
           expect(data).to.be.an('object');
 
           const { price } = data;
-          expect(price).to.eql(newPrice);
+          expect(price).to.equal(String(newPrice));
 
           done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should throw error when price is not a valid number', (done) => {
+      const newPrice = 'jdljkjl';
+      chai
+        .request(server)
+        .patch(`${apiV1}/car/${postedCar.id}/price`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send({ price: newPrice })
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.property('error');
+
+          const { status } = res.body;
+          expect(status).to.eql(res.status);
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should only update the price of a car by its owner', (done) => {
+      const newPrice = Number(postedCar.price) * 0.6;
+      postUser(anotherUser)
+        .then((aToken) => {
+          chai
+            .request(server)
+            .patch(`${apiV1}/car/${postedCar.id}/price`)
+            .set({ Authorization: `Bearer ${aToken}` })
+            .send({ price: newPrice })
+            .then((res) => {
+              res.should.have.status(403);
+              res.body.should.be.an('object');
+              res.body.should.have.property('error');
+
+              const { status } = res.body;
+              expect(status).to.eql(res.status);
+
+              done();
+            })
+            .catch(err => done(err));
         })
         .catch(err => done(err));
     });

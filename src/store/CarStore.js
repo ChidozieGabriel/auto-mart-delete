@@ -42,6 +42,36 @@ class CarStore extends Store {
     return res;
   }
 
+  static async updatePrice(id, user_id, { price }) {
+    if (!id) {
+      throw new ErrorClass('Invalid id');
+    }
+
+    if (!price || !Number.isFinite(price)) {
+      throw new ErrorClass('invalid price');
+    }
+
+    const query = `
+      UPDATE cars
+      SET price = $1
+      WHERE id = $2
+      RETURNING *`;
+    const params = [price, id];
+    const res = await DB.query(query, params).catch(() => {
+      throw new ErrorClass('Resource not found!', 404);
+    });
+
+    if (!res.id) {
+      throw new ErrorClass('Resource not found!', 404);
+    }
+
+    if (res.user_id !== user_id) {
+      throw new ErrorClass('Forbidden access', 403);
+    }
+
+    return res;
+  }
+
   filterByStatus(status, data = this.data) {
     return data.filter(e => e.status === status);
   }
