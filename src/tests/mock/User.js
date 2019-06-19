@@ -9,6 +9,11 @@ class User {
       email: 'unregisterede@mail.com',
       password: 'abc-123',
     };
+
+    this.anotherUser = {
+      email: 'jane@doe.com',
+      password: 'janedoe',
+    };
   }
 }
 

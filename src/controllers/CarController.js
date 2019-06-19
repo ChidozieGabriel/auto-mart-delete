@@ -29,15 +29,10 @@ class CarController {
     }
   }
 
-  static updatePrice(req, res, next) {
+  static async updatePrice(req, res, next) {
     try {
-      const { id } = req.params;
-      const { price } = req.body;
-
-      if (!price) throw new ErrorClass('Invalid input');
-      const car = CarStore.update(id, { price });
+      const car = await CarStore.updatePrice(req.params.id, req.user.id, req.body);
       const data = { ...car };
-
       ResultHandler.success(res, data);
     } catch (err) {
       next(err);
