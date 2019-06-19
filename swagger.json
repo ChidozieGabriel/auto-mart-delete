@@ -523,18 +523,25 @@
         }
       },
       "Car": {
-        "$ref": "#/components/schemas/Car"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Car"
+          },
+          {
+            "properties": {
+              "image": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        ]
       },
       "CarRequest": {
         "content": {
-          "application/x-www-form-urlencoded": {
+          "multipart/form-data": {
             "schema": {
               "$ref": "#/components/requestBodies/Car"
-            }
-          },
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Car"
             }
           }
         }
@@ -692,20 +699,19 @@
           {
             "properties": {
               "data": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          {
-            "properties": {
-              "data": {
-                "type": "object",
-                "properties": {
-                  "is_admin": {
-                    "type": "boolean",
-                    "default": false
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  {
+                    "properties": {
+                      "is_admin": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
                   }
-                }
+                ]
               }
             }
           }
@@ -720,7 +726,18 @@
           {
             "properties": {
               "data": {
-                "$ref": "#/components/schemas/Car"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Car"
+                  },
+                  {
+                    "properties": {
+                      "image_url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
               }
             }
           },
@@ -743,17 +760,19 @@
           {
             "properties": {
               "data": {
-                "$ref": "#/components/schemas/Order"
-              }
-            }
-          },
-          {
-            "properties": {
-              "data": {
-                "status": {
-                  "type": "string",
-                  "enum": ["pending", "accepted", "rejected"]
-                }
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Order"
+                  },
+                  {
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "enum": ["pending", "accepted", "rejected"]
+                      }
+                    }
+                  }
+                ]
               }
             }
           }

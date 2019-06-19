@@ -1,12 +1,12 @@
+import path from 'path';
+
 const car = {
-  email: 'e@mail.com',
   manufacturer: 'Toyota',
   model: 'Corolla',
   price: 100500,
   state: 'used',
   status: 'available',
 };
-
 const randomCars = function createCars(numOfCars = 25) {
   const cars = [];
   for (let i = 0; i < numOfCars; i += 1) {
@@ -21,4 +21,15 @@ const randomCars = function createCars(numOfCars = 25) {
   return cars;
 };
 
-export { car, randomCars };
+class Car {
+  constructor(noOfCars = 20) {
+    this.car = car;
+    this.carWithImage = {
+      ...car,
+      imagePath: path.resolve(__dirname, '../images/car.jpg'),
+    };
+    this.randomCars = randomCars(noOfCars);
+  }
+}
+
+export default Car;

@@ -2,8 +2,11 @@
 import chai, { should, expect } from 'chai';
 import chaiHTTP from 'chai-http';
 import server from '..';
-import user from './mock/user';
-import { car } from './mock/car';
+import User from './mock/User';
+import Car from './mock/Car';
+
+const { user } = new User();
+const { car } = new Car(5);
 
 should();
 chai.use(chaiHTTP);

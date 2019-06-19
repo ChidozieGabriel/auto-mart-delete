@@ -6,11 +6,9 @@ import ErrorClass from '../helpers/ErrorClass';
 import DB from '../DB';
 
 class UserStore extends Store {
-  static async create(user) {
-    const {
-      email, firstname, lastname, address, password,
-    } = user;
-
+  static async create({
+    email, firstname, lastname, address, password,
+  }) {
     if (!(email && password)) {
       throw new ErrorClass('Enter email and password');
     }

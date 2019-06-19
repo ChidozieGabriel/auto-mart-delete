@@ -1,7 +1,6 @@
 import { UserStore } from '../store';
 import JwtHandler from '../helpers/JwtHandler';
 import ResultHandler from '../helpers/ResultHandler';
-import ErrorClass from '../helpers/ErrorClass';
 
 class UserController {
   static async signUp(req, res, next) {
