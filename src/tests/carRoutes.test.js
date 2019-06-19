@@ -37,25 +37,25 @@ describe('Car routes "/car"', () => {
       .then((res) => {
         const { token: t } = res.body.data;
         token = t;
+
         // done();
+        let count = 0;
+        async.whilst(
+          (cb) => {
+            cb(null, count < randomCars.length);
+          },
+          (callback) => {
+            const eachCar = randomCars[count];
+            count += 1;
+            postCars(callback, eachCar);
+          },
+          (err) => {
+            if (err) done(err);
+            else done();
+          },
+        );
       })
       .catch(err => done(err));
-
-    let count = 0;
-    async.whilst(
-      (cb) => {
-        cb(null, count < randomCars.length);
-      },
-      (callback) => {
-        const eachCar = randomCars[count];
-        count += 1;
-        postCars(callback, eachCar);
-      },
-      (err) => {
-        if (err) done(err);
-        else done();
-      },
-    );
   });
 
   describe('POST /car', () => {
