@@ -4,6 +4,34 @@ import Store from './Store';
 import ErrorClass from '../helpers/ErrorClass';
 import DB from '../DB';
 
+const constructQuery = function constructSearchQuery(filter = {}) {
+  const searchParams = [];
+  let search = '';
+  let count = 0;
+  Object.entries(filter).forEach(([key, value]) => {
+    if (!value) {
+      return;
+    }
+
+    if (count === 0) {
+      search += 'WHERE ';
+    }
+
+    if (count > 0) {
+      search += ' AND ';
+    }
+
+    search += `${key} = $${(count += 1)}`;
+    searchParams.push(value);
+  });
+
+  return {
+    noOfParams: count,
+    search,
+    searchParams,
+  };
+};
+
 class CarStore extends Store {
   static async create(
     user_id,
@@ -52,10 +80,12 @@ class CarStore extends Store {
       WHERE id = $1
       `;
     const params = [id];
-    const res = await DB.query(query, params);
+    const res = await DB.query(query, params).catch((err) => {
+      throw err;
+    });
 
-    if (!res || !res.id) {
-      throw new Error('Resource not found!', 404);
+    if (!res) {
+      throw new ErrorClass('Resource not found!x', 404);
     }
 
     return res;
@@ -115,6 +145,53 @@ class CarStore extends Store {
 
     const { user_id: u, ...result } = res;
     return result;
+  }
+
+  static async getAll(filter = {}) {
+    const { min_price, max_price, ...rest } = filter;
+    const { search: aSearch, noOfParams: aNoOfParams, searchParams } = constructQuery(rest);
+    let search = aSearch || '';
+    let noOfParams = aNoOfParams || 0;
+
+    if (min_price) {
+      search += noOfParams === 0 ? 'WHERE ' : ' AND ';
+      search += `price <= $${(noOfParams += 1)}`;
+      searchParams.push(min_price);
+    }
+
+    if (max_price) {
+      search += noOfParams === 0 ? 'WHERE ' : ' AND ';
+      search += `price >= $${(noOfParams += 1)}`;
+      searchParams.push(max_price);
+    }
+
+    const query = `
+    SELECT * FROM cars
+    ${search}
+    ORDER BY _id
+    `;
+    const params = [...searchParams];
+    const res = await DB.query(query, params, true);
+    if (!res) {
+      throw new ErrorClass('Resource not found!', 404);
+    }
+
+    return res;
+  }
+
+  static async remove(id) {
+    if (!id) {
+      throw new ErrorClass('Invalid id.');
+    }
+
+    const query = `
+      DELETE FROM cars
+      WHERE id = $1
+      `;
+    const params = [id];
+    await DB.query(query, params).catch((err) => {
+      throw err;
+    });
   }
 }
 
