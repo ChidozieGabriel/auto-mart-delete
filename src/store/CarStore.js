@@ -42,6 +42,25 @@ class CarStore extends Store {
     return res;
   }
 
+  static async get(id) {
+    if (!id) {
+      throw new ErrorClass('Invalid id.');
+    }
+
+    const query = `
+      SELECT * FROM cars
+      WHERE id = $1
+      `;
+    const params = [id];
+    const res = await DB.query(query, params);
+
+    if (!res || !res.id) {
+      throw new Error('Resource not found!', 404);
+    }
+
+    return res;
+  }
+
   static async updatePrice(id, user_id, { price }) {
     if (!id) {
       throw new ErrorClass('Invalid id');
@@ -55,33 +74,47 @@ class CarStore extends Store {
       UPDATE cars
       SET price = $1
       WHERE id = $2
+      AND user_id = $3
       RETURNING *`;
-    const params = [price, id];
+    const params = [price, id, user_id];
     const res = await DB.query(query, params).catch(() => {
       throw new ErrorClass('Resource not found!', 404);
     });
 
-    if (!res.id) {
+    if (!res || !res.id) {
       throw new ErrorClass('Resource not found!', 404);
     }
 
-    if (res.user_id !== user_id) {
-      throw new ErrorClass('Forbidden access', 403);
+    const { user_id: u, ...result } = res;
+    return result;
+  }
+
+  static async updateStatus(id, user_id, { status }) {
+    if (!id) {
+      throw new ErrorClass('Invalid id');
     }
 
-    return res;
-  }
+    if (!status || (status !== 'available' && status !== 'sold')) {
+      throw new ErrorClass('invalid status');
+    }
 
-  filterByStatus(status, data = this.data) {
-    return data.filter(e => e.status === status);
-  }
+    const query = `
+      UPDATE cars
+      SET status = $1
+      WHERE id = $2
+      AND user_id = $3
+      RETURNING *`;
+    const params = [status, id, user_id];
+    const res = await DB.query(query, params).catch(() => {
+      throw new ErrorClass('Resource not found!', 404);
+    });
 
-  filterByPrice(minPrice, maxPrice, data = this.data) {
-    return data.filter(e => e.price >= minPrice && e.price <= maxPrice);
-  }
+    if (!res || !res.id) {
+      throw new ErrorClass('Resource not found!', 404);
+    }
 
-  filterByStatusAndPrice(status, minPrice, maxPrice) {
-    return this.data.filter(e => e.status === status && e.price >= minPrice && e.price <= maxPrice);
+    const { user_id: u, ...result } = res;
+    return result;
   }
 }
 
