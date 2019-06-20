@@ -1,28 +1,24 @@
 /* eslint-disable camelcase */
 import { CarStore } from '../store';
-import ErrorClass from '../helpers/ErrorClass';
 import ResultHandler from '../helpers/ResultHandler';
 
 class CarController {
   static async create(req, res, next) {
     try {
       const car = await CarStore.create(req.user.id, req.body);
-      const data = { ...car };
+      const { email } = req.user;
+      const data = { ...car, email };
       ResultHandler.success(res, data, 201);
     } catch (err) {
       next(err);
     }
   }
 
-  static updateStatus(req, res, next) {
+  static async updateStatus(req, res, next) {
     try {
-      const { id } = req.params;
-      const { status } = req.body;
-
-      if (!status) throw new ErrorClass('Invalid input');
-      const car = CarStore.update(id, { status });
-      const data = { ...car };
-
+      const car = await CarStore.updateStatus(req.params.id, req.user.id, req.body);
+      const { email } = req.user;
+      const data = { ...car, email };
       ResultHandler.success(res, data);
     } catch (err) {
       next(err);
@@ -32,19 +28,18 @@ class CarController {
   static async updatePrice(req, res, next) {
     try {
       const car = await CarStore.updatePrice(req.params.id, req.user.id, req.body);
-      const data = { ...car };
+      const { email } = req.user;
+      const data = { ...car, email };
       ResultHandler.success(res, data);
     } catch (err) {
       next(err);
     }
   }
 
-  static get(req, res, next) {
+  static async get(req, res, next) {
     try {
-      const { id } = req.params;
-      const car = CarStore.get(id);
+      const car = await CarStore.get(req.params.id);
       const data = { ...car };
-
       ResultHandler.success(res, data);
     } catch (err) {
       next(err);

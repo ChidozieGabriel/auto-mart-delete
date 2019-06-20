@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import chai, { should, expect } from 'chai';
+import chai, { should, expect, assert } from 'chai';
 import chaiHTTP from 'chai-http';
 import server from '..';
 import async from 'async';
@@ -11,7 +11,7 @@ should();
 chai.use(chaiHTTP);
 
 const { user, anotherUser } = new User();
-const { car, carWithImage, randomCars } = new Car(3);
+const { car, carWithImage, randomCars } = new Car();
 const apiV1 = '/api/v1';
 let postedCar = {};
 let token = '';
@@ -107,26 +107,74 @@ describe('Car routes "/car"', () => {
     });
   });
 
-  xdescribe('PATCH /car/<:car-id>/status', () => {
+  describe('PATCH /car/<:car-id>/status', () => {
     it('should mark a posted car Ad as sold', (done) => {
+      const newStatus = 'sold';
       chai
         .request(server)
         .patch(`${apiV1}/car/${postedCar.id}/status`)
         .set({ Authorization: `Bearer ${token}` })
-        .send({ status: 'sold' })
+        .send({ status: newStatus })
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
-
           const { status, data } = res.body;
           expect(status).to.eql(res.status);
           expect(data).to.be.an('object');
-
+          expect(data).to.have.property('email');
           const { id, status: carStatus } = data;
           expect(id).to.eql(postedCar.id);
-          expect(carStatus).to.eql('sold');
-
+          expect(carStatus).to.eql(newStatus);
           done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should throw error when status is not valid ', (done) => {
+      const newStatus = 'jdljkjl';
+      chai
+        .request(server)
+        .patch(`${apiV1}/car/${postedCar.id}/status`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send({ status: newStatus })
+        .then((res) => {
+          res.should.have.status(400);
+          res.body.should.be.an('object');
+          res.body.should.have.property('error');
+          const { status } = res.body;
+          expect(status).to.eql(res.status);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    it('should only update the status of a car by its owner', (done) => {
+      const newStatus = 'available';
+      postUser(anotherUser)
+        .then((aToken) => {
+          chai
+            .request(server)
+            .patch(`${apiV1}/car/${postedCar.id}/status`)
+            .set({ Authorization: `Bearer ${aToken}` })
+            .send({ status: newStatus })
+            .then((res) => {
+              res.clientError.should.eql(true);
+              res.body.should.be.an('object');
+              res.body.should.have.property('error');
+              const { status } = res.body;
+              expect(status).to.eql(res.status);
+
+              chai
+                .request(server)
+                .get(`${apiV1}/car/${postedCar.id}`)
+                .set({ Authorization: `Bearer ${aToken}` })
+                .then((res1) => {
+                  assert.notEqual(res1.body.data.status, newStatus);
+                  done();
+                })
+                .catch(err => done(err));
+            })
+            .catch(err => done(err));
         })
         .catch(err => done(err));
     });
@@ -147,6 +195,8 @@ describe('Car routes "/car"', () => {
           const { status, data } = res.body;
           expect(status).to.eql(res.status);
           expect(data).to.be.an('object');
+          expect(data).not.to.have.property('user_id');
+          expect(data).to.have.property('email');
 
           const { price } = data;
           expect(price).to.equal(String(newPrice));
@@ -186,14 +236,20 @@ describe('Car routes "/car"', () => {
             .set({ Authorization: `Bearer ${aToken}` })
             .send({ price: newPrice })
             .then((res) => {
-              res.should.have.status(403);
+              res.clientError.should.eql(true);
               res.body.should.be.an('object');
               res.body.should.have.property('error');
-
               const { status } = res.body;
               expect(status).to.eql(res.status);
-
-              done();
+              chai
+                .request(server)
+                .get(`${apiV1}/car/${postedCar.id}`)
+                .set({ Authorization: `Bearer ${aToken}` })
+                .then((res1) => {
+                  assert.notEqual(res1.body.data.price, newPrice);
+                  done();
+                })
+                .catch(err => done(err));
             })
             .catch(err => done(err));
         })
@@ -201,7 +257,7 @@ describe('Car routes "/car"', () => {
     });
   });
 
-  xdescribe('GET /car/<:car-id>/', () => {
+  describe('GET /car/<:car-id>/', () => {
     it('should get a specific car', (done) => {
       chai
         .request(server)
@@ -210,11 +266,26 @@ describe('Car routes "/car"', () => {
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
-
           const { status, data } = res.body;
           expect(status).to.eql(200);
           expect(data).to.be.an('object');
+          const { id } = data;
+          expect(id).to.eql(id);
+          done();
+        })
+        .catch(err => done(err));
+    });
 
+    it('should throw error if id is not valid', (done) => {
+      chai
+        .request(server)
+        .get(`${apiV1}/car/${postedCar.id}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .then((res) => {
+          res.body.should.be.an('object');
+          const { status, data } = res.body;
+          expect(status).to.eql(200);
+          expect(data).to.be.an('object');
           const { id } = data;
           expect(id).to.eql(id);
           done();
