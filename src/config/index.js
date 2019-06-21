@@ -15,7 +15,7 @@ switch (process.env.NODE_ENV) {
     break;
 
   case 'prod':
-    config.PORT = process.env.PROD_PORT;
+    config.PORT = process.env.PORT || process.env.PROD_PORT;
     config.DB = process.env.DB;
     break;
 
