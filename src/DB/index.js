@@ -7,10 +7,10 @@ const pool = new Pool({
 });
 
 class DB {
-  static async query(query, params) {
+  static async query(query, params, isArray = false) {
     const queryline = Utils.oneLineString(query);
     const result = await pool.query(queryline, params);
-    return result.rows[0];
+    return isArray ? result.rows : result.rows[0];
   }
 }
 

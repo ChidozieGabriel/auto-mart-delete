@@ -46,29 +46,24 @@ class CarController {
     }
   }
 
-  static getCars(req, res, next) {
+  static async getCars(req, res, next) {
     try {
-      const { min_price, max_price, ...search } = req.query;
-      let data = CarStore.getAll();
-
-      if (min_price && max_price) {
-        data = CarStore.filterByPrice(Number(min_price), Number(max_price), data);
+      if (req.query === 'sold') {
+        // check for admin
       }
 
-      if (search && Object.keys(search).length !== 0) data = CarStore.filter({ ...search }, data);
-
-      ResultHandler.success(res, [...data]);
+      const car = await CarStore.getAll(req.query);
+      const data = [...car];
+      ResultHandler.success(res, data);
     } catch (err) {
       next(err);
     }
   }
 
-  static remove(req, res, next) {
+  static async remove(req, res, next) {
     try {
-      const { id } = req.params;
-      CarStore.remove(id);
+      await CarStore.remove(req.params.id);
       const data = 'Car Ad successfully deleted';
-
       ResultHandler.success(res, data);
     } catch (err) {
       next(err);
