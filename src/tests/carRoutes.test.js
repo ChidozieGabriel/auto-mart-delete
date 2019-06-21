@@ -4,12 +4,12 @@ import chaiHTTP from 'chai-http';
 import server from '..';
 import async from 'async';
 import fs from 'fs';
-import Car from './mock/Car';
-import User from './mock/User';
+import { User, Car } from './mock';
+import Utils from './Utils';
 
 should();
 chai.use(chaiHTTP);
-
+const utils = new Utils(server);
 const { user, anotherUser } = new User();
 const { car, carWithImage, randomCars } = new Car();
 const apiV1 = '/api/v1';
@@ -17,28 +17,16 @@ let postedCar = {};
 let token = '';
 
 const postCars = function postCars(callback, eachCar) {
-  chai
-    .request(server)
-    .post(`${apiV1}/car`)
-    .set({ Authorization: `Bearer ${token}` })
-    .send(eachCar)
-    .then(() => {
-      callback(null, null);
-    })
+  utils
+    .postCar(eachCar, token)
+    .then(() => callback(null, null))
     .catch(err => callback(err, null));
 };
-const postUser = async function postUser(aUser) {
-  const res = await chai
-    .request(server)
-    .post(`${apiV1}/auth/signup`)
-    .send(aUser);
-  const { token: t } = res.body.data;
-  return t;
-};
 
-describe('Car routes "/car"', () => {
+describe('CAR ROUTES "/car"', () => {
   before((done) => {
-    postUser(user)
+    utils
+      .postUser(user)
       .then((aToken) => {
         token = aToken;
         let count = 0;
@@ -62,11 +50,8 @@ describe('Car routes "/car"', () => {
 
   describe('POST /car', () => {
     it('should post a car', (done) => {
-      chai
-        .request(server)
-        .post(`${apiV1}/car`)
-        .set({ Authorization: `Bearer ${token}` })
-        .send(car)
+      utils
+        .postCar(car, token)
         .then((res) => {
           res.should.have.status(201);
           res.body.should.be.an('object');
@@ -150,7 +135,8 @@ describe('Car routes "/car"', () => {
 
     it('should only update the status of a car by its owner', (done) => {
       const newStatus = 'available';
-      postUser(anotherUser)
+      utils
+        .postUser(anotherUser)
         .then((aToken) => {
           chai
             .request(server)
@@ -228,7 +214,8 @@ describe('Car routes "/car"', () => {
 
     it('should only update the price of a car by its owner', (done) => {
       const newPrice = Number(postedCar.price) * 0.6;
-      postUser(anotherUser)
+      utils
+        .postUser(anotherUser)
         .then((aToken) => {
           chai
             .request(server)

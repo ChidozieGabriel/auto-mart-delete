@@ -1,38 +1,10 @@
 /* eslint-disable camelcase */
 import uuid from 'uuid/v4';
-import Store from './Store';
 import ErrorClass from '../helpers/ErrorClass';
 import DB from '../DB';
+import Utils from '../helpers/Utils';
 
-const constructQuery = function constructSearchQuery(filter = {}) {
-  const searchParams = [];
-  let search = '';
-  let count = 0;
-  Object.entries(filter).forEach(([key, value]) => {
-    if (!value) {
-      return;
-    }
-
-    if (count === 0) {
-      search += 'WHERE ';
-    }
-
-    if (count > 0) {
-      search += ' AND ';
-    }
-
-    search += `${key} = $${(count += 1)}`;
-    searchParams.push(value);
-  });
-
-  return {
-    noOfParams: count,
-    search,
-    searchParams,
-  };
-};
-
-class CarStore extends Store {
+class CarStore {
   static async create(
     user_id,
     {
@@ -80,9 +52,7 @@ class CarStore extends Store {
       WHERE id = $1
       `;
     const params = [id];
-    const res = await DB.query(query, params).catch((err) => {
-      throw err;
-    });
+    const res = await DB.query(query, params);
 
     if (!res) {
       throw new ErrorClass('Resource not found!x', 404);
@@ -149,7 +119,7 @@ class CarStore extends Store {
 
   static async getAll(filter = {}) {
     const { min_price, max_price, ...rest } = filter;
-    const { search: aSearch, noOfParams: aNoOfParams, searchParams } = constructQuery(rest);
+    const { search: aSearch, noOfParams: aNoOfParams, searchParams } = Utils.constructQuery(rest);
     let search = aSearch || '';
     let noOfParams = aNoOfParams || 0;
 
@@ -189,9 +159,7 @@ class CarStore extends Store {
       WHERE id = $1
       `;
     const params = [id];
-    await DB.query(query, params).catch((err) => {
-      throw err;
-    });
+    await DB.query(query, params);
   }
 }
 
