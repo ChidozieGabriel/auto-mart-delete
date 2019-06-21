@@ -1,11 +1,10 @@
 /* eslint-disable camelcase */
 import uuid from 'uuid/v4';
 import bcrypt from 'bcrypt';
-import Store from './Store';
 import ErrorClass from '../helpers/ErrorClass';
 import DB from '../DB';
 
-class UserStore extends Store {
+class UserStore {
   static async create({
     email, firstname, lastname, address, password,
   }) {
@@ -15,7 +14,18 @@ class UserStore extends Store {
 
     const id = uuid();
     const created_on = new Date();
-    const query = 'INSERT INTO users(id, created_on, email, firstname, lastname, address, password) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+    const query = `
+    INSERT INTO users (
+      id, 
+      created_on, 
+      email, 
+      firstname, 
+      lastname, 
+      address, 
+      password
+      )
+    VALUES ($1, $2, $3, $4, $5, $6, $7) 
+    RETURNING *`;
     const hashedPassword = await bcrypt.hash(password, 10);
     const params = [id, created_on, email, firstname, lastname, address, hashedPassword];
     const res = await DB.query(query, params);

@@ -7,7 +7,7 @@ const car = {
   state: 'used',
   status: 'available',
 };
-const randomCars = function createCars(numOfCars = 25) {
+const randomCars = function createRandomCars(numOfCars = 25) {
   const cars = [];
   for (let i = 0; i < numOfCars; i += 1) {
     const aCar = { ...car };
