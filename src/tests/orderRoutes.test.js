@@ -12,19 +12,18 @@ const { user } = new User();
 const { car } = new Car(0);
 const { order, orderWithInvalidCarId } = new Order();
 const apiV1 = '/api/v1';
-const route = `${apiV1}/order`;
+const signUpRoute = `${apiV1}/auth/signup`;
 
 let postedOrder = {};
-let token = '';
 
-describe('Car order routes', () => {
+describe('CAR ORDER ROUTES', () => {
   before((done) => {
     utils
-      .postUser(user)
-      .then((t) => {
-        token = t;
+      .postUser(signUpRoute, user)
+      .then(() => {
+        const carRoute = `${apiV1}/car`;
         utils
-          .postCar(car, token)
+          .post(carRoute, car)
           .then((res) => {
             const { id, price } = res.body.data;
             order.car_id = id;
@@ -38,8 +37,9 @@ describe('Car order routes', () => {
 
   describe('POST /order/', () => {
     it('should throw error when there is no token provided', (done) => {
+      const route = `${apiV1}/order`;
       utils
-        .postOrder(order)
+        .post(route, order, null)
         .then((res) => {
           res.should.have.status(401);
           res.body.should.be.an('object');
@@ -51,8 +51,9 @@ describe('Car order routes', () => {
     });
 
     it('should create a purchase order', (done) => {
+      const route = `${apiV1}/order`;
       utils
-        .postOrder(order, token)
+        .post(route, order)
         .then((res) => {
           res.should.have.status(201);
           res.body.should.be.an('object');
@@ -75,18 +76,14 @@ describe('Car order routes', () => {
     });
 
     it('should throw error when the car-id is not valid', (done) => {
-      chai
-        .request(server)
-        .post(route)
-        .set({ Authorization: `Bearer ${token}` })
-        .send(orderWithInvalidCarId)
+      const route = `${apiV1}/order`;
+      utils
+        .post(route, orderWithInvalidCarId)
         .then((res) => {
           res.should.have.status(400);
           res.body.should.be.an('object');
           res.body.should.have.property('error');
-
-          const { status } = res.body;
-          expect(status).to.eql(res.status);
+          expect(res.body.status).to.eql(res.status);
           done();
         })
         .catch(err => done(err));
@@ -100,11 +97,10 @@ describe('Car order routes', () => {
       }
 
       const newPrice = postedOrder.price_offered * 0.5;
-      chai
-        .request(server)
-        .patch(`${route}/${postedOrder.id}/price`)
-        .set({ Authorization: `Bearer ${token}` })
-        .send({ price_offered: newPrice })
+      const route = `${apiV1}/order/${postedOrder.id}/price`;
+      const obj = { price_offered: newPrice };
+      utils
+        .patch(route, obj)
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -132,12 +128,6 @@ describe('Car order routes', () => {
         .catch(err => done(err));
     });
 
-    xit("should not update when order's status does not read pending", () => {
-      const newPrice = 100.0;
-      chai
-        .request(server)
-        .patch(`${apiV1}/patch/order/${postedOrder.id}/price`)
-        .send(newPrice);
-    });
+    xit("should not update when order's status does not read pending", () => {});
   });
 });

@@ -1,34 +1,62 @@
 import chai from 'chai';
 
 class Utils {
-  constructor(server, apiVersion = '/api/v1') {
+  constructor(server) {
     this.server = server;
-    this.apiVersion = apiVersion;
   }
 
-  async postUser(user, onlyToken = true) {
+  async postUser(route, user, shouldSaveToken = true) {
     const res = await chai
       .request(this.server)
-      .post(`${this.apiVersion}/auth/signup`)
+      .post(route)
       .send(user);
 
-    return onlyToken ? res.body.data.token : res;
+    if (shouldSaveToken) this.token = res.body.data.token;
+    return res;
   }
 
-  async postCar(car, token) {
+  async post(route, obj, token = this.token) {
     return chai
       .request(this.server)
-      .post(`${this.apiVersion}/car`)
-      .set({ Authorization: `Bearer ${token}` })
-      .send(car);
+      .post(route)
+      .auth(token, { type: 'bearer' })
+      .send(obj);
   }
 
-  async postOrder(order, token) {
+  async postFile(route, fields, files, token = this.token) {
+    const req = chai
+      .request(this.server)
+      .post(route)
+      .auth(token, { type: 'bearer' })
+      .field(fields);
+    Object.entries(files).forEach(([k, v]) => {
+      req.attach(k, v);
+    });
+
+    return req;
+  }
+
+  async get(route, query, token = this.token) {
     return chai
       .request(this.server)
-      .post(`${this.apiVersion}/order`)
-      .set({ Authorization: `Bearer ${token}` })
-      .send(order);
+      .get(route)
+      .auth(token, { type: 'bearer' })
+      .query(query);
+  }
+
+  async patch(route, obj, token = this.token) {
+    return chai
+      .request(this.server)
+      .patch(route)
+      .auth(token, { type: 'bearer' })
+      .send(obj);
+  }
+
+  async delete(route, token = this.token) {
+    return chai
+      .request(this.server)
+      .delete(route)
+      .auth(token, { type: 'bearer' });
   }
 }
 

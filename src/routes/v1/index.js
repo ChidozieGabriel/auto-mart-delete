@@ -2,6 +2,7 @@ import express from 'express';
 import authRoutes from './authRoutes';
 import carRoutes from './carRoutes';
 import orderRoutes from './orderRoutes';
+import flagRoutes from './flagRoutes';
 import JwtHandler from '../../helpers/JwtHandler';
 
 const router = express.Router();
@@ -12,5 +13,6 @@ router.get('/', (req, res) => res.json({
 router.use('/auth', authRoutes);
 router.use('/car', JwtHandler.authorize, carRoutes);
 router.use('/order', JwtHandler.authorize, orderRoutes);
+router.use('/flag', JwtHandler.authorize, flagRoutes);
 
 export default router;

@@ -11,10 +11,10 @@ const utils = new Utils(server);
 const { user, unRegisteredUser } = new User();
 const route = '/api/v1/auth';
 
-describe('User authentication routes', () => {
+describe('USER AUTHENTICATION ROUTES', () => {
   describe('POST /auth/signup', () => {
     it('should create a new user account', (done) => {
-      utils.postUser(user, false).then((res) => {
+      utils.postUser(`${route}/signup`, user).then((res) => {
         res.should.have.status(201);
         res.body.should.be.an('object');
 
@@ -39,10 +39,8 @@ describe('User authentication routes', () => {
 
   describe('POST /auth/signin', () => {
     it('should login a registered user', (done) => {
-      chai
-        .request(server)
-        .post(`${route}/signin`)
-        .send(user)
+      utils
+        .postUser(`${route}/signin`, user, false)
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -62,14 +60,11 @@ describe('User authentication routes', () => {
     });
 
     it('should throw error if no user is found', (done) => {
-      chai
-        .request(server)
-        .post(`${route}/signin`)
-        .send(unRegisteredUser)
+      utils
+        .post(`${route}/signin`, unRegisteredUser, false)
         .then((res) => {
           res.should.have.status(400);
           res.body.should.have.property('error');
-
           const { status } = res.body;
           expect(status).to.eql(res.status);
           done();
