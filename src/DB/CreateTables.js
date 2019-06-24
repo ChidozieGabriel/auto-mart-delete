@@ -57,15 +57,36 @@ CREATE TABLE orders
 );
 `;
 
+const dropTableFlags = 'DROP TABLE IF EXISTS flags CASCADE';
+const createTableFlags = `
+CREATE TABLE flags
+(
+    _id bigserial NOT NULL,
+    id character varying(100) NOT NULL,
+    user_id character varying(100) NOT NULL,
+    car_id character varying(100) NOT NULL,
+    created_on timestamp with time zone NOT NULL,
+    reason character varying(256) NOT NULL,
+    description character varying(256),
+    CONSTRAINT flags_pkey PRIMARY KEY (id),
+    CONSTRAINT flags_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES users (id),
+    CONSTRAINT flags_car_id_fkey FOREIGN KEY (car_id)
+        REFERENCES cars (id)
+);
+`;
+
 class CreateTables {
   static async create() {
     await DB.query(dropTableUsers);
     await DB.query(dropTableCars);
     await DB.query(dropTableOrders);
+    await DB.query(dropTableFlags);
 
     await DB.query(createTableUsers);
     await DB.query(createTableCars);
     await DB.query(createTableOrders);
+    await DB.query(createTableFlags);
   }
 }
 
