@@ -1,4 +1,9 @@
 const CONTENT_TYPE = { json: 'application/json; charset=UTF-8' };
+const HOST = {
+  development: 'http://localhost:3000',
+  production: 'https://automart-site.herokuapp.com',
+};
+const myHost = HOST.production;
 
 const myFetch = async (url, init = {}, form, isJson = true) => {
   const token = localStorage.getItem('token');
@@ -21,7 +26,7 @@ const myFetch = async (url, init = {}, form, isJson = true) => {
 };
 
 class Api {
-  constructor(host = 'http://localhost:3000/api/v1') {
+  constructor(host = myHost) {
     this.host = host;
   }
 
