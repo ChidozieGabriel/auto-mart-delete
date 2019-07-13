@@ -32,4 +32,8 @@ if (!config.PORT) {
 config.PRIVATE_KEY = fs.readFileSync('./private.pub', 'utf8');
 config.PUBLIC_KEY = fs.readFileSync('./public.pub', 'utf8');
 
+config.CORS_OPTIONS = {
+  origin: '*',
+};
+
 export default config;

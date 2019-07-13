@@ -130,9 +130,39 @@
       },
       "get": {
         "tags": ["car"],
-        "summary": "",
+        "summary": "get cars from the store",
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "available",
+              "enum": ["available", "sold"]
+            },
+            "description": "Filter cars by status"
+          },
+          {
+            "name": "min_price",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter cars by min price"
+          },
+          {
+            "name": "max_price",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter cars by max_price"
+          }
+        ],
         "operationId": "",
         "responses": {
           "allOf": [
@@ -529,7 +559,34 @@
       "Car": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/Car"
+            "type": "object",
+            "required": ["price", "manufacturer"],
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": ["new", "used"]
+              },
+              "status": {
+                "type": "string",
+                "enum": ["available", "sold"],
+                "default": "available"
+              },
+              "price": {
+                "type": "number"
+              },
+              "manufacturer": {
+                "type": "string",
+                "example": "Toyota"
+              },
+              "model": {
+                "type": "string",
+                "example": "Corolla"
+              },
+              "body_type": {
+                "type": "string",
+                "example": "van"
+              }
+            }
           },
           {
             "properties": {
@@ -545,7 +602,46 @@
         "content": {
           "multipart/form-data": {
             "schema": {
-              "$ref": "#/components/requestBodies/Car"
+              "allOf": [
+                {
+                  "type": "object",
+                  "required": ["price", "manufacturer"],
+                  "properties": {
+                    "state": {
+                      "type": "string",
+                      "enum": ["new", "used"]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["available", "sold"],
+                      "default": "available"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "manufacturer": {
+                      "type": "string",
+                      "example": "Toyota"
+                    },
+                    "model": {
+                      "type": "string",
+                      "example": "Corolla"
+                    },
+                    "body_type": {
+                      "type": "string",
+                      "example": "van"
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              ]
             }
           }
         }
