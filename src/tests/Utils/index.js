@@ -23,14 +23,14 @@ class Utils {
       .send(obj);
   }
 
-  async postFile(route, fields, files, token = this.token) {
+  async postFile(route, fields, files = {}, token = this.token) {
     const req = chai
       .request(this.server)
       .post(route)
       .auth(token, { type: 'bearer' })
       .field(fields);
-    Object.entries(files).forEach(([k, v]) => {
-      req.attach(k, v);
+    Object.entries(files).forEach(([k, v], i) => {
+      req.attach(k, v, `file${i}.png`);
     });
 
     return req;

@@ -25,17 +25,20 @@ class UserStore {
       password
       )
     VALUES ($1, $2, $3, $4, $5, $6, $7) 
-    RETURNING *`;
+    RETURNING 
+      id,
+      created_on,
+      email,
+      firstname,
+      lastname,
+      address,
+      is_admin
+    `;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const params = [id, created_on, email, firstname, lastname, address, hashedPassword];
+    const params = [id, created_on, email, firstname, lastname, address, String(hashedPassword)];
     const res = await DB.query(query, params);
 
-    return UserStore.extract(res);
-  }
-
-  get(id) {
-    const user = super.get(id);
-    return user ? UserStore.extract(user) : null;
+    return res;
   }
 
   static async getByEmail({ email, password }) {
@@ -44,9 +47,16 @@ class UserStore {
     }
 
     const query = `
-      SELECT * FROM users 
-      WHERE 
-        email = $1
+      SELECT 
+        id,
+        created_on,
+        email,
+        firstname,
+        lastname,
+        address,
+        password
+      FROM users 
+      WHERE email = $1
     `;
     const params = [email];
     const res = await DB.query(query, params);
@@ -60,14 +70,6 @@ class UserStore {
     }
 
     return UserStore.extract(res);
-  }
-
-  getAll() {
-    return this.data;
-  }
-
-  clear() {
-    this.data.length = 0;
   }
 
   static extract({ password, ...userWithoutPassword }) {

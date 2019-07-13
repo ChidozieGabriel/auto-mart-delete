@@ -24,7 +24,9 @@ class CarStore {
       VALUES(
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
       ) 
-      RETURNING *`;
+      RETURNING 
+      id, created_on, state, status, price, manufacturer, model, body_type, image_url
+      `;
     const params = [
       id,
       user_id,
@@ -37,9 +39,7 @@ class CarStore {
       body_type,
       image_url,
     ];
-    const res = await DB.query(query, params);
-
-    return res;
+    return DB.query(query, params);
   }
 
   static async get(id) {
@@ -136,7 +136,9 @@ class CarStore {
     }
 
     const query = `
-    SELECT * FROM cars
+    SELECT 
+      id, created_on, state, status, price, manufacturer, model, body_type, image_url 
+    FROM cars
     ${search}
     ORDER BY _id
     `;

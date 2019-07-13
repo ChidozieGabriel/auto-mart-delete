@@ -31,7 +31,7 @@ describe('USER AUTHENTICATION ROUTES', () => {
         expect(email).to.eql(user.email);
 
         done();
-      });
+      }).catch(err => done(err));
     });
 
     xit('should throw error when user signs up with already used email');
