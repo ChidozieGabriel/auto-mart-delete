@@ -38,6 +38,9 @@ class CarController {
 
   static async get(req, res, next) {
     try {
+      console.log('GET CAR:body:', req.body);
+      console.log('GET CAR:param:', req.params);
+      console.log('GET CAR:query:', req.query);
       const car = await CarStore.get(req.params.id);
       const data = { ...car };
       ResultHandler.success(res, data);
@@ -48,6 +51,9 @@ class CarController {
 
   static async getCars(req, res, next) {
     try {
+      console.log('GET CARs:body:', req.body);
+      console.log('GET CARs:param:', req.params);
+      console.log('GET CARs:query:', req.query);
       if (req.query === 'sold') {
         // check for admin
       }
