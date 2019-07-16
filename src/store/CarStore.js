@@ -25,7 +25,7 @@ class CarStore {
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
       ) 
       RETURNING 
-      id, created_on, state, status, price, manufacturer, model, body_type, image_url
+      id, user_id, created_on, state, status, price, manufacturer, model, body_type, image_url
       `;
     const params = [
       id,
@@ -39,7 +39,9 @@ class CarStore {
       body_type,
       image_url,
     ];
-    return DB.query(query, params);
+    const res = await DB.query(query, params);
+
+    return { ...res, owner: res.user_id };
   }
 
   static async get(id) {
@@ -55,10 +57,10 @@ class CarStore {
     const res = await DB.query(query, params);
 
     if (!res) {
-      throw new ErrorClass('Resource not found!x', 404);
+      throw new ErrorClass('Resource not found!', 404);
     }
 
-    return res;
+    return { ...res, owner: res.user_id };
   }
 
   static async updatePrice(id, user_id, { price }) {

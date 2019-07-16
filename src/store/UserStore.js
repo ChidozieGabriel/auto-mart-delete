@@ -54,7 +54,8 @@ class UserStore {
         firstname,
         lastname,
         address,
-        password
+        password,
+        is_admin
       FROM users 
       WHERE email = $1
     `;

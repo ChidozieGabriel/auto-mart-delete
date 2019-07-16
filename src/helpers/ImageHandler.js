@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import DataUri from 'datauri';
 import multer from 'multer';
+import config from '../config';
 
 class ImageHandler {
   static configureStorage(...args) {
@@ -17,6 +18,7 @@ class ImageHandler {
 
     const dataUri = new DataUri();
     const image = dataUri.format('.png', req.file.buffer).content;
+    cloudinary.config(config.CLOUDINARY_CONFIG);
     cloudinary.uploader
       .upload(image)
       .then((result) => {
