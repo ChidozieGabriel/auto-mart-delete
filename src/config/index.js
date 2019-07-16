@@ -36,4 +36,10 @@ config.CORS_OPTIONS = {
   origin: '*',
 };
 
+config.CLOUDINARY_CONFIG = {
+  cloud_name: 'chidozie-images',
+  api_key: '596386259834345',
+  api_secret: 'R0EZCJeAetIEx0uqDFaBEnGm48w',
+};
+
 export default config;
