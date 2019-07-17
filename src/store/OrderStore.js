@@ -4,11 +4,12 @@ import ErrorClass from '../helpers/ErrorClass';
 import DB from '../DB';
 
 class OrderStore {
-  static async create(user_id, { car_id, price_offered }) {
-    if (!(car_id && price_offered)) {
+  static async create(user_id, { car_id, price_offered, amount }) {
+    if (!(car_id && (price_offered || amount))) {
       throw new ErrorClass('Invalid input. Enter valid car id and price offered');
     }
 
+    const bidPrice = price_offered || amount;
     const id = uuid();
     const created_on = new Date();
     const query = `
@@ -19,7 +20,7 @@ class OrderStore {
       $1, $2, $3, $4, $5
     )
     `;
-    const params = [id, created_on, user_id, car_id, price_offered];
+    const params = [id, created_on, user_id, car_id, bidPrice];
     await DB.query(query, params).catch(() => {
       throw new ErrorClass('Invalid input. Check that car_id is correct.');
     });
