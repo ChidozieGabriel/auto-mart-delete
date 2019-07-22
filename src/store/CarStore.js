@@ -8,11 +8,21 @@ class CarStore {
   static async create(
     user_id,
     {
-      state, status, price, manufacturer, model, body_type, image_url,
+      state = 'new', status = 'available', price, manufacturer, model, body_type, image_url,
     },
   ) {
     if (!(price && manufacturer)) {
       throw new ErrorClass('Enter price and manufacturer');
+    }
+
+    const statusLowerCase = status.toLowerCase();
+    if (!(statusLowerCase === 'sold' || statusLowerCase === 'available')) {
+      throw new ErrorClass('Invalid status. Car status is either "sold" or "available"');
+    }
+
+    const stateLowerCase = state.toLowerCase();
+    if (!(stateLowerCase === 'new' || stateLowerCase === 'used')) {
+      throw new ErrorClass('Invalid state. Car state is either "new" or "used"');
     }
 
     const id = uuid();
